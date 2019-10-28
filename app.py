@@ -12,6 +12,10 @@ ALLOWED_EXTENSIONS = set(['svg'])
 def home():
     return render_template("home.html")
 
+@app.route("/index")
+def index():
+    return render_template("index.html")
+
 @app.route('/subir')
 def upload():
     return render_template('form.html')

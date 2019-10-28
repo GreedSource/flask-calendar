@@ -3,7 +3,7 @@
  <head>
    <meta charset="utf-8">
    <title>Flask Parent Template</title>
-   <link rel="stylesheet" href="{{ url_for('static',     filename='css/custom.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
  </head>
  <body>
     <header>
@@ -11,8 +11,9 @@
         <h1 class="logo">First Web App</h1>
         <strong><nav>
           <ul class="menu">
+            <li><a href="{{ url_for('index') }}">Index</a></li>
             <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('home') }}">About</a></li>
+            <li><a href="{{ url_for('upload') }}">Subir</a></li>
           </ul>
         </nav></strong>
       </div>
