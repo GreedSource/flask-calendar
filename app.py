@@ -32,7 +32,7 @@ def uploader():
         my_list = reader.read(file)
         os.remove(file)
     # Retornamos una respuesta satisfactoria
-    #return "<h1>Archivo subido exitosamente</h1>"
+    #return my_list
     return render_template("output.html", data=my_list)
 
 if __name__ == "__main__":
