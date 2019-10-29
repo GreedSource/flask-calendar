@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from svg_reader import reader
 
@@ -10,11 +10,11 @@ ALLOWED_EXTENSIONS = set(['svg'])
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("master.html")
 
 @app.route("/index")
 def index():
-    return render_template("index.html")
+    return render_template("master.html")
 
 @app.route('/subir')
 def upload():
@@ -32,8 +32,8 @@ def uploader():
         my_list = reader.read(file)
         os.remove(file)
     # Retornamos una respuesta satisfactoria
-    #return my_list
-    return render_template("output.html", data=my_list)
+    return jsonify(my_list)
+    #return render_template("output.html", data=my_list)
 
 if __name__ == "__main__":
     app.run(debug=True)
