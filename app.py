@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
-from svg_reader import reader
+from classes.svg_reader import reader
 
 app = Flask(__name__)
 
