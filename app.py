@@ -35,5 +35,12 @@ def uploader():
     return jsonify(my_list)
     #return render_template("output.html", data=my_list)
 
+@app.route('/uploads', methods=['post'])
+def pandas():
+    import pandas as pd
+    df = pd.read_excel('resources/excel-sample.xlsx')
+    json = df.values.tolist()
+    return jsonify(json)
+
 if __name__ == "__main__":
     app.run(debug=True)
