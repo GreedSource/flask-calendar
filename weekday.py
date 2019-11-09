@@ -18,11 +18,18 @@ class EsBusinessCalendar(AbstractHolidayCalendar):
      Holiday('Día de la Hispanidad', month=10, day=12, observance=sunday_to_monday),
      #Holiday('Todos los Santos', month=11, day=1, observance=sunday_to_monday),
      Holiday('Día Constitución', month=12, day=6, observance=sunday_to_monday),
-     Holiday('Inmaculada Concepción', month=12, day=8, observance=sunday_to_monday),	    
+     Holiday('Inmaculada Concepción', month=12, day=8, observance=sunday_to_monday),
      Holiday('Navidad', month=12, day=25, observance=sunday_to_monday)
    ]
+   def __init__(self, extra_rules):
+       self.rules.extend(extra_rules)
 
-es_BD = CustomBusinessDay(calendar=EsBusinessCalendar())
-s = pd.date_range('2019-11-01', end='2019-11-30', freq=es_BD)
+rules = [
+    Holiday('Todos los Santos', month=11, day=1, observance=sunday_to_monday),
+    Holiday('Todos los Santos', month=11, day=4, observance=sunday_to_monday)
+    ]
+
+es_BD = CustomBusinessDay(calendar=EsBusinessCalendar(rules))
+s = pd.date_range('2019-11-01', end='2019-11-15', freq=es_BD)
 df = pd.DataFrame(s, columns=['Fecha'])
 print(df)
