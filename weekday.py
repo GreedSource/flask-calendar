@@ -1,9 +1,3 @@
-"""from datetime import date
-import calendar
-my_date = date.today()
-print(calendar.day_name[my_date.weekday()])"""
-
-
 import pandas as pd
 from pandas.tseries.holiday import *
 from pandas.tseries.offsets import CustomBusinessDay
@@ -25,11 +19,13 @@ class EsBusinessCalendar(AbstractHolidayCalendar):
        self.rules.extend(extra_rules)
 
 rules = [
-    Holiday('Todos los Santos', month=11, day=1, observance=sunday_to_monday),
+    #Holiday('Todos los Santos', month=11, day=1, observance=sunday_to_monday),
     Holiday('Todos los Santos', month=11, day=4, observance=sunday_to_monday)
     ]
 
 es_BD = CustomBusinessDay(calendar=EsBusinessCalendar(rules))
-s = pd.date_range('2019-11-01', end='2019-11-15', freq=es_BD)
+inicio = '2019-11-01'
+fin = '2019-11-15'
+s = pd.date_range(inicio, end=fin, freq=es_BD)
 df = pd.DataFrame(s, columns=['Fecha'])
 print(df)
