@@ -4,8 +4,26 @@
 {% endblock %}
 {% block content %}
  <!--put something here-->
+
+<input type="text"
+	   id="calendario"
+       class="datepicker-here"
+       data-language='en'
+       data-multiple-dates="100"
+       data-multiple-dates-separator=","
+	   data-position="right top"
+	   /><br>
+	   <input type="submit" class="btn btn-success" onclick="obtenerdatos()" value="Ver datos"/>
+
 {% endblock %}
 
 {% block js_files %}
   <!--put something here-->
+<script>
+function obtenerdatos(){
+date = $("#calendario").val();
+var dias = date.split(',');
+console.log(dias);
+}	
+</script>
 {% endblock %}
