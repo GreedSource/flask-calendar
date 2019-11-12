@@ -1,5 +1,5 @@
 import pandas as pd
-from pandas.tseries.holiday import *
+from pandas.tseries.holiday import Holiday, sunday_to_monday, AbstractHolidayCalendar, Easter, Day
 from pandas.tseries.offsets import CustomBusinessDay
 
 class EsBusinessCalendar(AbstractHolidayCalendar):

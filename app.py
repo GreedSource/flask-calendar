@@ -21,7 +21,7 @@ def uploader():
         # obtenemos el archivo del input "archivo"
         f = request.files['archivo']
         filename = secure_filename(f.filename)
-        file = os.path.join(app.config['UPLOAD_FOLDER'], filename);
+        file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         # Guardamos el archivo en el directorio "Archivos PDF"
         f.save(file)
         my_list = []

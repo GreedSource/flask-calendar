@@ -13,4 +13,4 @@ class reader(object):
         for title in titles:
             tmp = title.firstChild.nodeValue.split("\n")
             my_list.append(tmp)
-        return my_list;
+        return my_list
