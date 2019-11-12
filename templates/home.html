@@ -10,7 +10,8 @@
        class="datepicker-here"
        data-language='es'
        data-multiple-dates="100"
-       data-multiple-dates-separator=","
+       data-multiple-dates-separator=",",
+       weekends='false',
 	   data-position="right top"
 	   /><br>
 	   <input type="submit" class="btn btn-success" onclick="obtenerdatos()" value="Ver datos"/>
@@ -20,10 +21,34 @@
 {% block js_files %}
   <!--put something here-->
 <script>
+  var disabledDays = [0, 6];
+
+$('#calendario').datepicker({
+    onRenderCell: function (date, cellType) {
+        if (cellType == 'day') {
+            var day = date.getDay(),
+                isDisabled = disabledDays.indexOf(day) != -1;
+
+            return {
+                disabled: isDisabled
+            }
+        }
+    }
+})
 function obtenerdatos(){
 date = $("#calendario").val();
 var dias = date.split(',');
 console.log(dias);
+$.ajax({
+        url: '{{url_for("pandas")}}',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(dias),
+        success: function(data){
+          console.log(data)
+        }
+      })
 }	
 </script>
 {% endblock %}

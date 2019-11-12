@@ -1,7 +1,6 @@
-import os
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
-from classes.svg_reader import reader
+import os
 
 app = Flask(__name__)
 
@@ -25,7 +24,7 @@ def uploader():
         file = os.path.join(app.config['UPLOAD_FOLDER'], filename);
         # Guardamos el archivo en el directorio "Archivos PDF"
         f.save(file)
-        my_list = reader.read(file)
+        my_list = []
         os.remove(file)
     # Retornamos una respuesta satisfactoria
     return jsonify(my_list)
