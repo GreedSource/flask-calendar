@@ -1,6 +1,7 @@
 import pandas as pd
 from pandas.tseries.holiday import Holiday, sunday_to_monday, AbstractHolidayCalendar, Easter, Day
 from pandas.tseries.offsets import CustomBusinessDay
+from datetime import date
 
 class EsBusinessCalendar(AbstractHolidayCalendar):
    rules = [
@@ -23,9 +24,28 @@ rules = [
     Holiday('Todos los Santos', month=11, day=4, observance=sunday_to_monday)
     ]
 
-es_BD = CustomBusinessDay(calendar=EsBusinessCalendar(rules))
-inicio = '2019-11-01'
-fin = '2019-11-15'
-s = pd.date_range(inicio, end=fin, freq=es_BD)
-df = pd.DataFrame(s, columns=['Fecha'])
-print(df)
+class weekday(object):
+      rules = []
+      def __init__(self, inicio, fin):
+            self.inicio = inicio
+            self.fin = fin
+
+      def obtener_habiles(self, inhabiles):
+            for inhabil in inhabiles:
+                  fecha = inhabil.split('/')
+                  self.rules.append(Holiday('Festivo', month=int(fecha[1]), day=int(fecha[0]), observance=sunday_to_monday))
+            es_BD = CustomBusinessDay(calendar=EsBusinessCalendar(self.rules))
+            s = pd.date_range(self.inicio, end=self.fin, freq=es_BD)
+            s.strftime('%Y-%m-%d')
+                        
+            return s.tolist()
+
+''' obj = weekday('2019-11-01', '2019-12-31')
+reglas = ['12/11/2019','01/11/2019']
+
+fechas = obj.obtener_habiles(reglas)
+
+if fechas[7] == date.today():
+      print (True)
+else:
+      print(False) '''

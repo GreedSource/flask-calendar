@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
+from classes.weekday import weekday
 import os
 
 app = Flask(__name__)
@@ -36,7 +37,8 @@ def pandas():
     if request.method == 'POST':
         #data = request.form.getlist('inhabiles')
         data = request.get_json()
-    return jsonify(data)
+        inhabiles = weekday('2019-11-01', '2019-12-31')
+    return jsonify(inhabiles.obtener_habiles(data))
 
 if __name__ == "__main__":
     app.run(debug=True)
