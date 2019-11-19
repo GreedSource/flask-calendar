@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from classes.weekday import weekday
+from classes.xlsx import xlsx_reader
 import os
 
 app = Flask(__name__)
@@ -24,8 +25,10 @@ def uploader():
         filename = secure_filename(f.filename)
         file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         # Guardamos el archivo en el directorio "Archivos PDF"
+
         f.save(file)
-        my_list = []
+        obj = xlsx_reader()
+        my_list = obj.reader(file)
         os.remove(file)
     # Retornamos una respuesta satisfactoria
     return jsonify(my_list)

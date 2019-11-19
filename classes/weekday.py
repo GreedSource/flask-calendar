@@ -19,10 +19,6 @@ class EsBusinessCalendar(AbstractHolidayCalendar):
    def __init__(self, extra_rules):
        self.rules.extend(extra_rules)
 
-rules = [
-    #Holiday('Todos los Santos', month=11, day=1, observance=sunday_to_monday),
-    Holiday('Todos los Santos', month=11, day=4, observance=sunday_to_monday)
-    ]
 
 class weekday(object):
       rules = []
@@ -39,13 +35,3 @@ class weekday(object):
             s.strftime('%Y-%m-%d')
                         
             return s.tolist()
-
-''' obj = weekday('2019-11-01', '2019-12-31')
-reglas = ['12/11/2019','01/11/2019']
-
-fechas = obj.obtener_habiles(reglas)
-
-if fechas[7] == date.today():
-      print (True)
-else:
-      print(False) '''

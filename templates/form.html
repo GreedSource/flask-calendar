@@ -35,7 +35,7 @@
       var formData = new FormData(form);
 
       $.ajax({
-        url: '{{url_for("pandas")}}',
+        url: '{{url_for("uploader")}}',
         type: 'post',
         data: formData,
         success: function(data){
