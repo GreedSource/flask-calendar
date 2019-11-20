@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
-from classes.weekday import weekday
-from classes.xlsx import xlsx_reader
+from app.weekday import weekday
+from app.xlsx import xlsx_reader
 import os
 
 app = Flask(__name__)
