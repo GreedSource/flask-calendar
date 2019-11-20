@@ -6,7 +6,7 @@ class xlsx_reader(object):
     def json_output(self, data):
         date = datetime.now()
         name = 'calendario'+ date.strftime('%Y%m%d-%H%M%S')
-        with open(f'output/{name}.json', 'w', encoding='utf-8') as f:
+        with open(f'out/{name}.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
         return True
         
