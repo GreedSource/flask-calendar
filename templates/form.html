@@ -5,16 +5,46 @@
 {% block content %}
 <div class="box box-primary">
     <div class="box-header with-border">
-      <h3 class="box-title">Subir archivo</h3>
+      <h3 class="box-title">Crear calendario de examenes</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
     <form onsubmit="upload_file(this, event)" enctype="multipart/form-data">
       <div class="box-body">
-        <div class="form-group">
-          <label for="archivo">Cargue un archivo excel</label>
-          <input type="file" id="archivo" accept=".xlsx" name="archivo">
-          <p class="help-block">Seleccione el archivo en formato excel (xlsx).</p>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Días inhabiles</label>
+                        <input type="text" id="calendario" class="datepicker-here form-control" data-language='es' data-multiple-dates="100" data-multiple-dates-separator=",", data-position="right top"/>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Horario</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Horario</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Horario</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="archivo">Cargue un archivo excel</label>
+                    <input type="file" id="archivo" accept=".xlsx" name="archivo">
+                    <p class="help-block">Seleccione el archivo en formato excel (xlsx).</p>
+                </div>
+            </div>
         </div>
       </div>
       <!-- /.box-body -->
@@ -28,8 +58,21 @@
 
 {% block js_files %}
   <script>
-      //console.log('Hello world')
+    //console.log('Hello world')
 
+    var disabledDays = [0, 6];
+
+    $('#calendario').datepicker({
+        onRenderCell: function (date, cellType) {
+            if (cellType == 'day') {
+                var day = date.getDay(),
+                    isDisabled = disabledDays.indexOf(day) != -1;
+                return {
+                    disabled: isDisabled
+                }
+            }
+        }
+    })
     function upload_file(form, event){
       event.preventDefault();
       var formData = new FormData(form);
@@ -47,6 +90,5 @@
       })
 
     }
-
   </script>
 {% endblock %}
