@@ -9,26 +9,26 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    <form onsubmit="upload_file(this, event)" enctype="multipart/form-data">
+    <form id="formulario" onsubmit="upload_file(this, event)" enctype="multipart/form-data">
       <div class="box-body">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="parcial-1">Fecha parcial 1</label>
-                        <input type="text" id="parcial-1" name="parcial-1" class="datepicker-here form-control" data-language='es'/>
+                        <input type="text" id="parcial-1" name="parcial-1" class="datepicker-here form-control" data-language='es' data-parsley-required />
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="ordinario">Fecha Ordinario</label>
-                        <input type="text" id="ordinario" name="ordinario" class="datepicker-here form-control" data-language='es'/>
+                        <input type="text" id="ordinario" name="ordinario" class="datepicker-here form-control" data-language='es' data-parsley-required/>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Grado</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" data-parsley-required/>
                     </div>
                 </div>
             </div>
@@ -36,19 +36,19 @@
               <div class="col-md-4">
                   <div class="form-group">
                       <label for="parcial-2">Fecha parcial 2</label>
-                      <input type="text" id="parcial-2" name="parcial-2" class="datepicker-here form-control" data-language='es'/>
+                      <input type="text" id="parcial-2" name="parcial-2" class="datepicker-here form-control" data-language='es' data-parsley-required/>
                   </div>
               </div>
               <div class="col-md-4">
                   <div class="form-group">
                       <label for="extra-1">Fecha Extraordinario 1</label>
-                      <input type="text" id="extra-1" name="extra-1" class="datepicker-here form-control" data-language='es'/>
+                      <input type="text" id="extra-1" name="extra-1" class="datepicker-here form-control" data-language='es' data-parsley-required/>
                   </div>
               </div>
               <div class="col-md-4">
                   <div class="form-group">
                       <label for="">Grupo</label>
-                      <input type="text" class="form-control">
+                      <input type="text" class="form-control" data-parsley-required/>
                   </div>
               </div>
             </div>
@@ -56,19 +56,19 @@
               <div class="col-md-4">
                   <div class="form-group">
                       <label for="parcial-3">Fecha parcial 3</label>
-                      <input type="text" id="parcial-3" name="parcial-3" class="datepicker-here form-control" data-language='es'/>
+                      <input type="text" id="parcial-3" name="parcial-3" class="datepicker-here form-control" data-language='es' data-parsley-required/>
                   </div>
               </div>
               <div class="col-md-4">
                   <div class="form-group">
                       <label for="extra-2">Fecha Extraordinario 2</label>
-                      <input type="text" id="extra-2" name="extra-2" class="datepicker-here form-control" data-language='es'/>
+                      <input type="text" id="extra-2" name="extra-2" class="datepicker-here form-control" data-language='es' data-parsley-required/>
                   </div>
               </div>
               <div class="col-md-4">
                   <div class="form-group">
                       <label for="">Carrera</label>
-                      <input type="text" class="form-control">
+                      <input type="text" class="form-control" data-parsley-required/>
                   </div>
               </div>
             </div>
@@ -76,7 +76,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="archivo">Cargue un archivo excel</label>
-                    <input type="file" id="archivo" accept=".xlsx" name="archivo">
+                    <input type="file" id="archivo" accept=".xlsx" name="archivo" data-parsley-required> 
                     <p class="help-block">Seleccione el archivo en formato excel (xlsx).</p>
                   </div>
                 </div>
@@ -90,7 +90,9 @@
       <!-- /.box-body -->
 
       <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Enviar</button>
+        <div class="container-fluid">
+          <button type="submit" class="btn btn-block btn-flat btn-primary">Generar calendario de examenes</button>
+        </div>
       </div>
     </form>
   </div>
@@ -123,20 +125,20 @@
     })
     function upload_file(form, event){
       event.preventDefault();
-      var formData = new FormData(form);
-
-      $.ajax({
-        url: '{{url_for("uploader")}}',
-        type: 'post',
-        data: formData,
-        success: function(data){
-          alert(data);
-        },
-        cache: false,
-        contentType: false,
-        processData: false
-      })
-
+      if(validarFormulario(form)){
+        var formData = new FormData(form);
+        $.ajax({
+          url: '{{url_for("uploader")}}',
+          type: 'post',
+          data: formData,
+          success: function(data){
+            //alert(data);
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        })
+      }
     }
   </script>
 {% endblock %}
