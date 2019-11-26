@@ -19,5 +19,3 @@ import openpyxl
 wb = openpyxl.load_workbook(destino)
 ws = wb.worksheets[0]
 ws['B9'] = 'today'
-
-wb.save(destino)

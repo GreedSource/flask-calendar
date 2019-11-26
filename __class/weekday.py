@@ -40,3 +40,18 @@ class weekday(object):
             s = pd.date_range(self.inicio, end=self.fin, freq=es_BD)
             s.strftime('%Y-%m-%d')
             return s.tolist()
+
+class process_data(object):
+      def __init__(self, str_dates):
+            dates = []
+            index = 0
+            for date in str_dates:
+                  date_object = datetime.strptime(date, '%d/%m/%Y')
+                  if index < 3:
+                        quantity = 6
+                  else:
+                        quantity = 3
+                  optimal_date = date_object - timedelta(days = quantity)
+                  dates.append(optimal_date)
+                  index += 1
+            print(dates)

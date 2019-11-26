@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
-from __class.weekday import weekday
-from __class.xlsx import xlsx_reader
+from __class.weekday import weekday, process_data
+from __class.xlsx import xlsx_reader, xlsx_writer
 import os
 
 app = Flask(__name__)
@@ -21,21 +21,38 @@ def upload():
 def uploader():
     if request.method == 'POST':
         # obtenemos el archivo del input "archivo"
+        #################REQUEST########################
         f = request.files['archivo']
+        parcial1 = request.form.get('parcial-1')
+        parcial2 = request.form.get('parcial-2')
+        parcial3 = request.form.get('parcial-3')
+        ordinario = request.form.get('ordinario')
+        extra1  = request.form.get('extra-1')
+        extra2  = request.form.get('extra-2')
+        calendario = request.form.get('calendario')
+        grado = request.form.get('grado')
+        grupo = request.form.get('grupo')
+        carrera = request.form.get('carrera')
+        #################FILES####################
         filename = secure_filename(f.filename)
         file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         # Guardamos el archivo en el directorio "Archivos PDF"
         f.save(file)
-        obj = xlsx_reader()
-        my_list = obj.reader(file)
+        reader = xlsx_reader()
+        my_list = reader.read(file)
         os.remove(file)
-        calendario = request.form.get('calendario')
+        ###########################
         if calendario:
             calendario = calendario.split(',')
-        parcial1 = request.form.get('parcial-1')
-        extra2  = request.form.get('extra-2')
+        entregas = [parcial1, parcial2, parcial3, ordinario, extra1, extra2]
+
         inhabiles = weekday(parcial1, extra2)
-        habiles = inhabiles.obtener_habiles(calendario)
+        #habiles = inhabiles.obtener_habiles(calendario)
+        
+        process = process_data(entregas)
+
+        writer = xlsx_writer(carrera, grado, grupo)
+        writer.write(entregas)
     # Retornamos una respuesta satisfactoria
     return jsonify(my_list)
     #return render_template("output.html", data=my_list)

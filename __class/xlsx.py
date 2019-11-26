@@ -11,7 +11,7 @@ class xlsx_reader(object):
             json.dump(data, f, ensure_ascii=False, indent=4)
         return True
         
-    def reader(self, file):
+    def read(self, file):
         all_data = []
         excel = xlrd.open_workbook(file)
         sheet_0 = excel.sheet_by_index(0) # Open the first tab
@@ -98,4 +98,29 @@ class xlsx_reader(object):
         self.json_output(array)
         return array
 
+class xlsx_writer(object):
+    def __init__(self, carrera, grado, grupo):
+        self.carrera = carrera
+        self.grado = grado
+        self.grupo = grupo
+        import shutil
+        fuente = "resources/template.xlsx"
+        date = datetime.now().strftime("%Y-%m-%d-%H%M%S")
+        name = f'calendario-{carrera}-{grado}{grupo}-{date}'
+        name = f'output/{name}.xlsx'
+        self.name = name
+        shutil.copyfile(fuente, name)
 
+    def write(self, record):
+        row = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+        import openpyxl
+        wb = openpyxl.load_workbook(self.name)
+        ws = wb.worksheets[0]
+        ws['B2'] = f'{self.grado}-{self.grupo}'
+        index = 1
+        for item in record:
+            cell = f'{row[index]}8'
+            ws[cell] = item
+            index += 1
+
+        wb.save(self.name)

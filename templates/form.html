@@ -27,8 +27,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="">Grado</label>
-                        <input type="text" class="form-control" data-parsley-required/>
+                        <label for="grado">Grado</label>
+                        <input type="text" name="grado" id="grado" class="form-control" maxlength="2" data-parsley-required/>
                     </div>
                 </div>
             </div>
@@ -47,8 +47,8 @@
               </div>
               <div class="col-md-4">
                   <div class="form-group">
-                      <label for="">Grupo</label>
-                      <input type="text" class="form-control" data-parsley-required/>
+                      <label for="grupo">Grupo</label>
+                      <input type="text" id='grupo' name='grupo' maxlength="1" class="form-control" data-parsley-required/>
                   </div>
               </div>
             </div>
@@ -67,8 +67,8 @@
               </div>
               <div class="col-md-4">
                   <div class="form-group">
-                      <label for="">Carrera</label>
-                      <input type="text" class="form-control" data-parsley-required/>
+                      <label for="carrera">Carrera</label>
+                      <input type="text" name='carrera' id='carrera' class="form-control" data-parsley-required/>
                   </div>
               </div>
             </div>
@@ -110,6 +110,15 @@
       $input.focus();
     });
 
+    $('#grupo').bind('keyup blur',function(){ 
+        var node = $(this);
+        node.val(node.val().replace(/[^a-zA-Z]/g,'') ); }
+    );
+    $('#grado').bind('keyup blur',function(){ 
+        var node = $(this);
+        node.val(node.val().replace(/[^0-9]/g,'') ); }
+    );
+
     var disabledDays = [0, 6];
 
     $('.datepicker-here').datepicker({
@@ -123,6 +132,11 @@
             }
         }
     })
+
+    $('.datepicker-here').keypress(function(event){
+      event.preventDefault()
+    });
+
     function upload_file(form, event){
       event.preventDefault();
       if(validarFormulario(form)){
