@@ -3,10 +3,11 @@ import xlrd, json
 
 
 class xlsx_reader(object):
+
     def json_output(self, data):
         date = datetime.now()
         name = 'calendario'+ date.strftime('%Y%m%d-%H%M%S')
-        with open(f'out/{name}.json', 'w', encoding='utf-8') as f:
+        with open(f'json/{name}.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
         return True
         
@@ -17,7 +18,7 @@ class xlsx_reader(object):
         prev_row = [None for i in range(sheet_0.ncols)]
         first = True
         for row_index in range(sheet_0.nrows):
-            #if first == False:
+            if first == False:
                 row = []
                 for col_index in range(sheet_0.ncols):
                     value = sheet_0.cell(rowx=row_index,colx=col_index).value
@@ -26,7 +27,7 @@ class xlsx_reader(object):
                     row.append(value)
                 prev_row = row
                 all_data.append(row)
-            #else:
+            else:
                 first = False
             ######
         data = []
@@ -38,6 +39,28 @@ class xlsx_reader(object):
                     child = child.split('\n')
                 tmp.append(child)
             data.append(tmp)
-        self.json_output(data)
+        data = self.parse_to_json(data)
         return data
+
+    def parse_to_json(self, data):
+        array = {}
+        array['lunes'] = []
+        array['martes'] = []
+        array['miercoles'] = []
+        array['jueves'] = []
+        array['viernes'] = []
+        for hour in data:
+            if type(hour[1]) != str:
+                array['lunes'].append(hour[1])
+            if type(hour[2]) != str:
+                array['martes'].append(hour[2])
+            if type(hour[3]) != str:
+                array['miercoles'].append(hour[3])
+            if type(hour[4]) != str:
+                array['jueves'].append(hour[4])
+            if type(hour[5]) != str:
+                array['viernes'].append(hour[5])
+        self.json_output(array)
+        return array
+
 
