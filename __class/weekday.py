@@ -52,6 +52,15 @@ class process_data(object):
                   else:
                         quantity = 3
                   optimal_date = date_object - timedelta(days = quantity)
-                  dates.append(optimal_date)
+                  final_date = self.__weekday(optimal_date)
+                  dates.append(final_date)
                   index += 1
-            print(dates)
+
+      def __weekday(self, day):
+            date_number = day.weekday()
+            if date_number < 5:
+                  #print(date_number)
+                  return day
+            else:
+                  new_date = day - timedelta(days=1)
+                  return self.__weekday(new_date)

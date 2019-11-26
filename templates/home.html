@@ -3,52 +3,33 @@
   Flask calendar
 {% endblock %}
 {% block content %}
- <!--put something here-->
+ <div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Crear calendario de examenes</h3>
+  </div>
+    <div class="box-body">
 
-<input type="text"
-	   id="calendario"
-       class="datepicker-here"
-       data-language='es'
-       data-multiple-dates="100"
-       data-multiple-dates-separator=",",
-       weekends='false',
-	   data-position="right top"
-	   /><br>
-	   <input type="submit" class="btn btn-success" onclick="obtenerdatos()" value="Ver datos"/>
+    <table class="table table-condensed">
+      <thead>
+        <th>#</th>
+        <th>Horario</th>
+        <th>Descargar</th>
+      </thead>
+      <tbody>
+        
+        {% for row in records %}
+        <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td><a href="{{ url_for('return_file') }}?file={{row[1]}}" file="{{row[1]}}" download class="btn btn-info">Descargar</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+ </div>
 
 {% endblock %}
 
 {% block js_files %}
-  <!--put something here-->
-<script>
-  var disabledDays = [0, 6];
-
-$('#calendario').datepicker({
-    onRenderCell: function (date, cellType) {
-        if (cellType == 'day') {
-            var day = date.getDay(),
-                isDisabled = disabledDays.indexOf(day) != -1;
-            return {
-                disabled: isDisabled
-            }
-        }
-    }
-})
-function obtenerdatos(){
-  var date = $("#calendario").val();
-  var formData = new FormData();
-  formData.append('date', date);
-  $.ajax({
-        url: '{{url_for("pandas")}}',
-        type: 'post',
-        data: formData,
-        success: function(data){
-          console.log(data)
-        },
-        cache: false,
-        contentType: false,
-        processData: false 
-      })
-}	
-</script>
 {% endblock %}

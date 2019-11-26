@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 from werkzeug.utils import secure_filename
 from __class.weekday import weekday, process_data
 from __class.xlsx import xlsx_reader, xlsx_writer
@@ -11,7 +11,23 @@ ALLOWED_EXTENSIONS = set(['xlsx'])
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    # Abrir un archivo
+    path = "output"
+    dirs = os.listdir(path)
+    records = []
+    index = 1
+    for file in dirs:
+        tmp = [index, file]
+        records.append(tmp)
+        index+=1
+    return render_template("home.html", records=records)
+
+@app.route('/return-files', methods=['GET'])
+def return_file():
+    if request.method == 'GET':
+        file = request.args.get('file')
+    #return send_file(f'/output/{file}', as_attachment=True, attachment_filename=file)
+    return send_file(f'output/{file}', as_attachment=True)
 
 @app.route('/subir')
 def upload():
