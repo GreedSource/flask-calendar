@@ -51,15 +51,50 @@ class xlsx_reader(object):
         array['viernes'] = []
         for hour in data:
             if type(hour[1]) != str:
-                array['lunes'].append(hour[1])
+                tmp = hour[1]
+                tmp.append(1)
+                if any(list == tmp for list in array['lunes']):
+                    x = array['lunes'].index(tmp)
+                    y = len(hour[1]) - 1
+                    array['lunes'][x][y] += 1
+                else:
+                    array['lunes'].append(tmp)
             if type(hour[2]) != str:
-                array['martes'].append(hour[2])
+                tmp = hour[2]
+                tmp.append(1)
+                if any(list == tmp for list in array['martes']):
+                    x = array['martes'].index(tmp)
+                    y = len(hour[2]) - 1
+                    array['martes'][x][y] += 1
+                else:
+                    array['martes'].append(tmp)
             if type(hour[3]) != str:
-                array['miercoles'].append(hour[3])
+                tmp = hour[3]
+                tmp.append(1)
+                if any(list == tmp for list in array['miercoles']):
+                    x = array['miercoles'].index(tmp)
+                    y = len(hour[3]) - 1
+                    array['miercoles'][x][y] += 1
+                else:
+                    array['miercoles'].append(tmp)
             if type(hour[4]) != str:
-                array['jueves'].append(hour[4])
+                tmp = hour[4]
+                tmp.append(1)
+                if any(list == tmp for list in array['jueves']):
+                    x = array['jueves'].index(tmp)
+                    y = len(hour[4]) - 1
+                    array['jueves'][x][y] += 1
+                else:
+                    array['jueves'].append(tmp)
             if type(hour[5]) != str:
-                array['viernes'].append(hour[5])
+                tmp = hour[5]
+                tmp.append(1)
+                if any(list == tmp for list in array['viernes']):
+                    x = array['viernes'].index(tmp)
+                    y = len(hour[5]) - 1
+                    array['viernes'][x][y] += 1
+                else:
+                    array['viernes'].append(tmp)
         self.json_output(array)
         return array
 

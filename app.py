@@ -25,11 +25,17 @@ def uploader():
         filename = secure_filename(f.filename)
         file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         # Guardamos el archivo en el directorio "Archivos PDF"
-
         f.save(file)
         obj = xlsx_reader()
         my_list = obj.reader(file)
         os.remove(file)
+        calendario = request.form.get('calendario')
+        if calendario:
+            calendario = calendario.split(',')
+        parcial1 = request.form.get('parcial-1')
+        extra2  = request.form.get('extra-2')
+        inhabiles = weekday(parcial1, extra2)
+        habiles = inhabiles.obtener_habiles(calendario)
     # Retornamos una respuesta satisfactoria
     return jsonify(my_list)
     #return render_template("output.html", data=my_list)
@@ -39,8 +45,11 @@ def pandas():
     #########
     if request.method == 'POST':
         #data = request.form.getlist('inhabiles')
-        data = request.get_json()
+        #data = request.get_json()
+        days = request.form.get('date')
+        data = days.split(',')
         inhabiles = weekday('2019-11-01', '2019-12-31')
+        print(days)
     return jsonify(inhabiles.obtener_habiles(data))
 
 if __name__ == "__main__":

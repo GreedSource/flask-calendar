@@ -35,18 +35,19 @@ $('#calendario').datepicker({
     }
 })
 function obtenerdatos(){
-date = $("#calendario").val();
-var dias = date.split(',');
-console.log(dias);
-$.ajax({
+  var date = $("#calendario").val();
+  var formData = new FormData();
+  formData.append('date', date);
+  $.ajax({
         url: '{{url_for("pandas")}}',
         type: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(dias),
+        data: formData,
         success: function(data){
           console.log(data)
-        }
+        },
+        cache: false,
+        contentType: false,
+        processData: false 
       })
 }	
 </script>

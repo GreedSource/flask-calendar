@@ -1,9 +1,23 @@
-import json
-data = []
+import shutil
+# decodigo.com
+fuente = "resources/template.xlsx"
+destino = "output/template.xlsx"
+shutil.copyfile(fuente, destino)
 
-name = 'calendario20191125-221000.json'
+import os
 
-with open(f'json/{name}') as file:
-    data = json.load(file)
+# Abrir un archivo
+path = "output"
+dirs = os.listdir(path)
 
-print(data)
+# Esto va a imprimir todos los archivos del directorio
+for file in dirs:
+   print (file)
+
+import openpyxl
+
+wb = openpyxl.load_workbook(destino)
+ws = wb.worksheets[0]
+ws['B9'] = 'today'
+
+wb.save(destino)

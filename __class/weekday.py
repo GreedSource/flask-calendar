@@ -1,7 +1,7 @@
 import pandas as pd
 from pandas.tseries.holiday import Holiday, sunday_to_monday, AbstractHolidayCalendar, Easter, Day
 from pandas.tseries.offsets import CustomBusinessDay
-from datetime import date
+from datetime import date, timedelta, datetime
 
 class EsBusinessCalendar(AbstractHolidayCalendar):
    rules = [
@@ -23,6 +23,12 @@ class EsBusinessCalendar(AbstractHolidayCalendar):
 class weekday(object):
       rules = []
       def __init__(self, inicio, fin):
+            date_object = datetime.strptime(inicio, '%d/%m/%Y')
+            inicio = date_object - timedelta(days=30)
+            inicio = inicio.strftime('%Y-%m-%d')
+            
+            date_object = datetime.strptime(fin, '%d/%m/%Y')
+            fin = date_object.strftime('%Y-%m-%d')
             self.inicio = inicio
             self.fin = fin
 
@@ -33,5 +39,4 @@ class weekday(object):
             es_BD = CustomBusinessDay(calendar=EsBusinessCalendar(self.rules))
             s = pd.date_range(self.inicio, end=self.fin, freq=es_BD)
             s.strftime('%Y-%m-%d')
-                        
             return s.tolist()
