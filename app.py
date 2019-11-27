@@ -63,13 +63,14 @@ def uploader():
         entregas = [parcial1, parcial2, parcial3, ordinario, extra1, extra2]
 
         inhabiles = weekday(parcial1, extra2)
-        #habiles = inhabiles.obtener_habiles(calendario)
+        habiles = inhabiles.obtener_habiles(calendario)
         
-        process = process_data(entregas)
-
+        process = process_data()
+        processed = process.get_dates(entregas)
+        #print(processed.get_dates())
         writer = xlsx_writer(carrera, grado, grupo)
 
-        writer.write(entregas, majors)
+        writer.write(processed, majors, habiles)
     # Retornamos una respuesta satisfactoria
     return jsonify(majors)
     #return render_template("output.html", data=my_list)

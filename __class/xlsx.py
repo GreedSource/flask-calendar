@@ -1,5 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import xlrd, json
+from __class.weekday import process_data
+import openpyxl
 
 class xlsx_reader(object):
 
@@ -115,14 +117,16 @@ class xlsx_reader(object):
                         for row in data[record]:      
                                 if row[1] == major:
                                     hours = row[len(row)-1]
-                                    tmp = [record, hours]
-                                    output[major] = [tmp]
+                                    if hours > 1:
+                                        #tmp = [record, hours]
+                                        output[major] = [record]
                     else:
                         for row in data[record]:      
                                 if row[1] == major:
                                     hours = row[len(row)-1]
-                                    tmp = [record, hours]
-                                    output[major].append(tmp)
+                                    if hours > 1:
+                                        #tmp = [record, hours]
+                                        output[major].append(record)
         return output
 
 class xlsx_writer(object):
@@ -138,15 +142,46 @@ class xlsx_writer(object):
         self.name = name
         shutil.copyfile(fuente, name)
 
-    def write(self, corte, majors):
-        row = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-        import openpyxl
+    def date_assignament(self, majors, corte, habiles):
+        array = {}
+        for major in majors:
+            index = len(majors[major]) - 1
+            last = majors[major][index]
+            wd = process_data()
+            day = wd.date_assignament(last)
+            for row in corte:
+                if row.weekday() == day:
+                    if not major in array:
+                        array[major] = [row]
+                    else:
+                        array[major].append(row)
+                else:
+                    date = self.__recursive_date_validation(row, day, habiles)
+                    if not major in array:
+                        array[major] = [date]
+                    else:
+                        array[major].append(date)
+        return array
+
+    def __recursive_date_validation(self, date, wd, habiles):
+        date = date - timedelta(days=1)
+        if date.weekday() == wd:
+            if date in habiles:
+                return date
+            else:
+                return self.__recursive_date_validation(date, wd, habiles)
+        else:
+            return self.__recursive_date_validation(date, wd, habiles)
+
+    def write(self, corte, majors, habiles):
+        columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
         wb = openpyxl.load_workbook(self.name)
         ws = wb.worksheets[0]
         ws['B2'] = f'{self.grado}-{self.grupo}'
         index = 1
         for item in corte:
-            cell = f'{row[index]}8'
+            item = item.strftime('%d-%m-%Y')
+            cell = f'{columns[index]}8'
             ws[cell] = item
             index += 1
         index = 9
@@ -154,4 +189,13 @@ class xlsx_writer(object):
             cell = f'A{index}'
             ws[cell] = major
             index += 1
+        fechas = self.date_assignament(majors, corte, habiles)
+        row = 9
+        for major in fechas:
+            column = 1
+            for fecha in fechas[major]:
+                cell = f'{columns[column]}{row}'
+                ws[cell] = fecha.strftime('%d-%m-%Y')
+                column += 1
+            row += 1
         wb.save(self.name)

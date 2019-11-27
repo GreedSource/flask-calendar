@@ -42,7 +42,27 @@ class weekday(object):
             return s.tolist()
 
 class process_data(object):
-      def __init__(self, str_dates):
+
+      def __weekday(self, day):
+            date_number = day.weekday()
+            if date_number < 5:
+                  return day
+            else:
+                  new_date = day - timedelta(days=1)
+                  return self.__weekday(new_date)
+
+      def date_assignament(self, date):
+            if date == 'lunes':
+                  return 0
+            if date == 'martes':
+                  return 1
+            if date == 'miercoles':
+                  return 2
+            if date == 'jueves':
+                  return 3
+            if date == 'viernes':
+                  return 4
+      def get_dates(self, str_dates):
             dates = []
             index = 0
             for date in str_dates:
@@ -55,11 +75,4 @@ class process_data(object):
                   final_date = self.__weekday(optimal_date)
                   dates.append(final_date)
                   index += 1
-
-      def __weekday(self, day):
-            date_number = day.weekday()
-            if date_number < 5:
-                  return day
-            else:
-                  new_date = day - timedelta(days=1)
-                  return self.__weekday(new_date)
+            return dates
