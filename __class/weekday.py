@@ -59,7 +59,6 @@ class process_data(object):
       def __weekday(self, day):
             date_number = day.weekday()
             if date_number < 5:
-                  #print(date_number)
                   return day
             else:
                   new_date = day - timedelta(days=1)

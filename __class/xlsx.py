@@ -1,7 +1,6 @@
 from datetime import datetime
 import xlrd, json
 
-
 class xlsx_reader(object):
 
     def json_output(self, data):
@@ -95,8 +94,36 @@ class xlsx_reader(object):
                     array['viernes'][x][y] += 1
                 else:
                     array['viernes'].append(tmp)
+        array = self.obtain_majors(array)
         self.json_output(array)
         return array
+
+    def obtain_majors(self, data):
+        array = []
+        for record in data:
+            for row in data[record]:
+                    if not (row[1] in array):
+                        if row[1] != 'Tutorías':
+                                #tmp = [row[1], record]
+                                array.append(row[1])
+                                #array.append(tmp)
+
+        output = {}
+        for record in data:
+            for major in array:
+                    if not major in output:
+                        for row in data[record]:      
+                                if row[1] == major:
+                                    hours = row[len(row)-1]
+                                    tmp = [record, hours]
+                                    output[major] = [tmp]
+                    else:
+                        for row in data[record]:      
+                                if row[1] == major:
+                                    hours = row[len(row)-1]
+                                    tmp = [record, hours]
+                                    output[major].append(tmp)
+        return output
 
 class xlsx_writer(object):
     def __init__(self, carrera, grado, grupo):
@@ -111,16 +138,20 @@ class xlsx_writer(object):
         self.name = name
         shutil.copyfile(fuente, name)
 
-    def write(self, record):
+    def write(self, corte, majors):
         row = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
         import openpyxl
         wb = openpyxl.load_workbook(self.name)
         ws = wb.worksheets[0]
         ws['B2'] = f'{self.grado}-{self.grupo}'
         index = 1
-        for item in record:
+        for item in corte:
             cell = f'{row[index]}8'
             ws[cell] = item
             index += 1
-
+        index = 9
+        for major in majors:
+            cell = f'A{index}'
+            ws[cell] = major
+            index += 1
         wb.save(self.name)

@@ -55,7 +55,7 @@ def uploader():
         # Guardamos el archivo en el directorio "Archivos PDF"
         f.save(file)
         reader = xlsx_reader()
-        my_list = reader.read(file)
+        majors = reader.read(file)
         os.remove(file)
         ###########################
         if calendario:
@@ -68,9 +68,10 @@ def uploader():
         process = process_data(entregas)
 
         writer = xlsx_writer(carrera, grado, grupo)
-        writer.write(entregas)
+
+        writer.write(entregas, majors)
     # Retornamos una respuesta satisfactoria
-    return jsonify(my_list)
+    return jsonify(majors)
     #return render_template("output.html", data=my_list)
 
 @app.route('/uploads', methods=['post'])
