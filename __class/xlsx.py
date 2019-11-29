@@ -173,14 +173,14 @@ class xlsx_writer(object):
         else:
             return self.__recursive_date_validation(date, wd, habiles)
 
-    def write(self, corte, majors, habiles):
+    def write(self, corte, majors, habiles, entregas):
         columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
         wb = openpyxl.load_workbook(self.name)
         ws = wb.worksheets[0]
         ws['B2'] = f'{self.grado}-{self.grupo}'
         index = 1
-        for item in corte:
-            item = item.strftime('%d-%m-%Y')
+        for item in entregas:
+            #item = item.strftime('%d-%m-%Y')
             cell = f'{columns[index]}8'
             ws[cell] = item
             index += 1

@@ -70,7 +70,7 @@ def uploader():
         #print(processed.get_dates())
         writer = xlsx_writer(carrera, grado, grupo)
 
-        writer.write(processed, majors, habiles)
+        writer.write(processed, majors, habiles, entregas)
     # Retornamos una respuesta satisfactoria
     return jsonify(majors)
     #return render_template("output.html", data=my_list)
