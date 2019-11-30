@@ -1,11 +1,3 @@
-import xlwt
-import xlrd
-import xlutils
-import copy
+from random import randrange, choice
+print(choice(["uno", "dos", "tres"]))
 
-wb1 = xlrd.open_workbook(r'output/prueba.xlsx')
-copia = copy.copy(wb1)
-hoja = copia.sheet_by_name(r'Grupo - ITI')
-hoja.cell(12,3).value = 5 #solo para probar la edicion
-
-copia.save('output/prueba.xlsx')

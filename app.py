@@ -49,6 +49,7 @@ def uploader():
         grado = request.form.get('grado')
         grupo = request.form.get('grupo')
         carrera = request.form.get('carrera')
+        ciclo = request.form.get('ciclo')
         #################FILES####################
         filename = secure_filename(f.filename)
         file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -70,7 +71,7 @@ def uploader():
         #print(processed.get_dates())
         writer = xlsx_writer(carrera, grado, grupo)
 
-        writer.write(processed, majors, habiles, entregas)
+        writer.write(processed, majors, habiles, entregas, ciclo)
     # Retornamos una respuesta satisfactoria
     return jsonify(majors)
     #return render_template("output.html", data=my_list)
@@ -84,7 +85,7 @@ def pandas():
         days = request.form.get('date')
         data = days.split(',')
         inhabiles = weekday('2019-11-01', '2019-12-31')
-        print(days)
+        #print(days)
     return jsonify(inhabiles.obtener_habiles(data))
 
 if __name__ == "__main__":

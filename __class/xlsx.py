@@ -1,5 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import locale
+from random import randrange, choice
 # Idioma "es-ES" (código para el español de España)
 
 import xlrd, json
@@ -55,52 +56,101 @@ class xlsx_reader(object):
         array['viernes'] = []
         for hour in data:
             if type(hour[1]) != str:
-                tmp = hour[1]
-                tmp.append(1)
-                if any(list == tmp for list in array['lunes']):
-                    x = array['lunes'].index(tmp)
-                    y = len(hour[1]) - 1
+                existe = False
+                x = 0
+                for major in array['lunes']:
+                    #print(major)
+                    if major[1] == hour[1][1]:
+                        x = array['lunes'].index(major)
+                        existe = True
+                        #print(f'{major[1]} - {hour[1][1]}')
+                        break
+                if existe == True and major[1] in hour[1]:
+                    y = len(hour[1])
                     array['lunes'][x][y] += 1
                 else:
+                    tmp = hour[1]
+                    tmp.append(1)
+                    tmp.append(hour[0])
                     array['lunes'].append(tmp)
+            
             if type(hour[2]) != str:
-                tmp = hour[2]
-                tmp.append(1)
-                if any(list == tmp for list in array['martes']):
-                    x = array['martes'].index(tmp)
-                    y = len(hour[2]) - 1
+                existe = False
+                x = 0
+                for major in array['martes']:
+                    #print(major)
+                    if major[1] == hour[2][1]:
+                        x = array['martes'].index(major)
+                        existe = True
+                        #print(f'{major[1]} - {hour[1][1]}')
+                        break
+                if existe == True and major[1] in hour[2]:
+                    y = len(hour[2])
                     array['martes'][x][y] += 1
                 else:
+                    tmp = hour[2]
+                    tmp.append(1)
+                    tmp.append(hour[0])
                     array['martes'].append(tmp)
+
             if type(hour[3]) != str:
-                tmp = hour[3]
-                tmp.append(1)
-                if any(list == tmp for list in array['miercoles']):
-                    x = array['miercoles'].index(tmp)
-                    y = len(hour[3]) - 1
+                existe = False
+                x = 0
+                for major in array['miercoles']:
+                    #print(major)
+                    if major[1] == hour[3][1]:
+                        x = array['miercoles'].index(major)
+                        existe = True
+                        #print(f'{major[1]} - {hour[3][1]}')
+                        break
+                if existe == True and major[1] in hour[3]:
+                    y = len(hour[3])
                     array['miercoles'][x][y] += 1
                 else:
+                    tmp = hour[3]
+                    tmp.append(1)
+                    tmp.append(hour[0])
                     array['miercoles'].append(tmp)
+            
             if type(hour[4]) != str:
-                tmp = hour[4]
-                tmp.append(1)
-                if any(list == tmp for list in array['jueves']):
-                    x = array['jueves'].index(tmp)
-                    y = len(hour[4]) - 1
+                existe = False
+                x = 0
+                for major in array['jueves']:
+                    #print(major)
+                    if major[1] == hour[4][1]:
+                        x = array['jueves'].index(major)
+                        existe = True
+                        #print(f'{major[1]} - {hour[1][1]}')
+                        break
+                if existe == True and major[1] in hour[4]:
+                    y = len(hour[4])
                     array['jueves'][x][y] += 1
                 else:
+                    tmp = hour[4]
+                    tmp.append(1)
+                    tmp.append(hour[0])
                     array['jueves'].append(tmp)
             if type(hour[5]) != str:
-                tmp = hour[5]
-                tmp.append(1)
-                if any(list == tmp for list in array['viernes']):
-                    x = array['viernes'].index(tmp)
-                    y = len(hour[5]) - 1
+                existe = False
+                x = 0
+                for major in array['viernes']:
+                    #print(major)
+                    if major[1] == hour[5][1]:
+                        x = array['viernes'].index(major)
+                        existe = True
+                        #print(f'{major[1]} - {hour[1][1]}')
+                        break
+                if existe == True and major[1] in hour[5]:
+                    y = len(hour[5])
                     array['viernes'][x][y] += 1
                 else:
+                    tmp = hour[5]
+                    tmp.append(1)
+                    tmp.append(hour[0])
                     array['viernes'].append(tmp)
+        
         array = self.obtain_majors(array)
-        self.json_output(array)
+        #self.json_output(array)
         return array
 
     def obtain_majors(self, data):
@@ -109,32 +159,60 @@ class xlsx_reader(object):
             for row in data[record]:
                     if not (row[1] in array):
                         if row[1] != 'Tutorías':
-                                #tmp = [row[1], record]
-                                array.append(row[1])
-                                #array.append(tmp)
-
+                            hour = len(row) - 2
+                            hours = hour + 1
+                            tmp = [row[0], row[1], row[hours], row[hour]]
+                            array.append(tmp)
+                            #array.append(tmp)
+        #print(array)
+        
         output = {}
         for record in data:
             for major in array:
-                    if not major in output:
+                    if not major[1] in output:
                         for row in data[record]:      
-                                if row[1] == major:
-                                    hours = row[len(row)-1]
+                                if row[1] == major[1]:
+                                    hours = row[len(row)-2]
                                     if hours > 1:
-                                        #tmp = [record, hours]
-                                        output[major] = [record]
+                                        #print(row)
+                                        if len(row[1]) > 0:
+                                            x = len(row) - 1
+                                            tmp = [record, row[0], row[x]]
+                                            output[major[1]] = [tmp]
+                                        else:
+                                            x = len(row) - 1
+                                            tmp = [record, row[0], row[x]]
+                                            output[major[1]] = [tmp]
+                                        #print(record)
                     else:
                         for row in data[record]:      
-                                if row[1] == major:
-                                    hours = row[len(row)-1]
+                                if row[1] == major[1]:
+                                    hours = row[len(row)-2]
                                     if hours > 1:
-                                        #tmp = [record, hours]
-                                        output[major].append(record)
-        return output
+                                        if len(row[1]) > 0:
+                                            x = len(row) - 1
+                                            tmp = [record, row[0], row[x]]
+                                            output[major[1]].append(tmp)
+                                        else:
+                                            x = len(row) - 1
+                                            tmp = [record, row[0], row[x]]
+                                            output[major[1]].append(tmp)
+        exit = {}
+        for record in output:
+            exit[record] = []
+            for row in output[record]:
+                if any(list == row for list in exit[record]) == False:
+                    exit[record].append(row)
+                    """#exit[record] = [row]
+                    print('\n')
+                    #print(row)
+                else:
+                    exit[record].append(row)"""
+        return exit
 
 class xlsx_writer(object):
     def __init__(self, carrera, grado, grupo):
-        locale.setlocale(locale.LC_ALL, 'es-ES')
+        locale.setlocale(locale.LC_ALL, 'es-MX')
         self.carrera = carrera
         self.grado = grado
         self.grupo = grupo
@@ -150,22 +228,37 @@ class xlsx_writer(object):
     def date_assignament(self, majors, corte, habiles):
         array = {}
         for major in majors:
-            index = len(majors[major]) - 1
-            last = majors[major][index]
+            _major = choice(majors[major])
+            #print(major)
+
+            """index = len(majors[major]) - 1
+            last = majors[major][index]"""
             wd = process_data()
-            day = wd.date_assignament(last)
+            day = wd.date_assignament(_major[0])
+            #print(f'{_major} - {day}')
+            
             for row in corte:
+                #print(row)
                 if row.weekday() == day:
                     if not major in array:
-                        array[major] = [row]
+                        tmp = [row, _major[1], _major[2]]
+                        array[major] = [tmp]
                     else:
-                        array[major].append(row)
+                        #print('append')
+                        tmp = [row, _major[1], _major[2]]
+                        array[major].append(tmp)
                 else:
+                    
                     date = self.__recursive_date_validation(row, day, habiles)
                     if not major in array:
-                        array[major] = [date]
+                        tmp = [date, _major[1], _major[2]]
+                        array[major] = [tmp]
                     else:
-                        array[major].append(date)
+                        tmp = [date, _major[1], _major[2]]
+                        array[major].append(tmp)
+
+        #self.json_output(array)
+        
         return array
 
     def __recursive_date_validation(self, date, wd, habiles):
@@ -178,7 +271,7 @@ class xlsx_writer(object):
         else:
             return self.__recursive_date_validation(date, wd, habiles)
 
-    def write(self, corte, majors, habiles, entregas):
+    def write(self, corte, majors, habiles, entregas, ciclo):
         columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
         wb = openpyxl.load_workbook(self.name)
         ws = wb.worksheets[0]
@@ -187,7 +280,7 @@ class xlsx_writer(object):
         #img.anchor = 'A1'
         #ws.add_image(img)
         ws['B2'] = f'{self.grado}-{self.grupo}'
-        ws['B3'] = f'{self.carrera}'
+        ws['B3'] = f'{self.carrera} - {ciclo} - {date.today().strftime("%Y")}'
         index = 1
         for item in entregas:
             #item = item.strftime('%d-%m-%Y')
@@ -199,13 +292,20 @@ class xlsx_writer(object):
             cell = f'A{index}'
             ws[cell] = major
             index += 1
+        
+        
         fechas = self.date_assignament(majors, corte, habiles)
         row = 9
         for major in fechas:
             column = 1
             for fecha in fechas[major]:
                 cell = f'{columns[column]}{row}'
-                ws[cell] = fecha.strftime('%A %d de %B')
+                dt = fecha[0].strftime('%A %d de %B')
+                hora = fecha[2].split('-')[0]
+                lab = fecha[1]
+                value = f'{dt}\n{hora}\n{lab}'
+                ws[cell] = value
                 column += 1
             row += 1
+        
         wb.save(self.name)
