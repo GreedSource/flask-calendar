@@ -1,4 +1,7 @@
 from datetime import datetime, timedelta
+import locale
+# Idioma "es-ES" (código para el español de España)
+
 import xlrd, json
 from __class.weekday import process_data
 import openpyxl
@@ -131,9 +134,11 @@ class xlsx_reader(object):
 
 class xlsx_writer(object):
     def __init__(self, carrera, grado, grupo):
+        locale.setlocale(locale.LC_ALL, 'es-ES')
         self.carrera = carrera
         self.grado = grado
         self.grupo = grupo
+        self.carrera = carrera
         import shutil
         fuente = "resources/template.xlsx"
         date = datetime.now().strftime("%Y-%m-%d-%H%M%S")
@@ -177,7 +182,12 @@ class xlsx_writer(object):
         columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
         wb = openpyxl.load_workbook(self.name)
         ws = wb.worksheets[0]
+        #img = openpyxl.drawing.image.Image('resources/logo.png')
+        #img.anchor(ws.cell('A1'))
+        #img.anchor = 'A1'
+        #ws.add_image(img)
         ws['B2'] = f'{self.grado}-{self.grupo}'
+        ws['B3'] = f'{self.carrera}'
         index = 1
         for item in entregas:
             #item = item.strftime('%d-%m-%Y')
@@ -195,7 +205,7 @@ class xlsx_writer(object):
             column = 1
             for fecha in fechas[major]:
                 cell = f'{columns[column]}{row}'
-                ws[cell] = fecha.strftime('%d-%m-%Y')
+                ws[cell] = fecha.strftime('%A %d de %B')
                 column += 1
             row += 1
         wb.save(self.name)
