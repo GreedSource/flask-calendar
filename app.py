@@ -3,11 +3,14 @@ from werkzeug.utils import secure_filename
 from __class.weekday import weekday, process_data
 from __class.xlsx import xlsx_reader, xlsx_writer
 import os
+import locale
 
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = './uploads'
 ALLOWED_EXTENSIONS = set(['xlsx'])
+
+locale.setlocale(locale.LC_ALL, 'Spanish')
 
 @app.route("/")
 def home():

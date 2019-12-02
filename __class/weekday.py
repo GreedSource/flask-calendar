@@ -12,7 +12,7 @@ class EsBusinessCalendar(AbstractHolidayCalendar):
      Holiday('Asunción de la Virgen', month=8, day=15, observance=sunday_to_monday),
      Holiday('Día de la Hispanidad', month=10, day=12, observance=sunday_to_monday),
      #Holiday('Todos los Santos', month=11, day=1, observance=sunday_to_monday),
-     Holiday('Día Constitución', month=12, day=6, observance=sunday_to_monday),
+     #Holiday('Día Constitución', month=12, day=6, observance=sunday_to_monday),
      Holiday('Inmaculada Concepción', month=12, day=8, observance=sunday_to_monday),
      Holiday('Navidad', month=12, day=25, observance=sunday_to_monday)
    ]

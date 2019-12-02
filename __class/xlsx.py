@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, date
-import locale
 from random import randrange, choice
 # Idioma "es-ES" (código para el español de España)
 
@@ -150,7 +149,7 @@ class xlsx_reader(object):
                     array['viernes'].append(tmp)
         
         array = self.obtain_majors(array)
-        #self.json_output(array)
+        self.json_output(array)
         return array
 
     def obtain_majors(self, data):
@@ -203,16 +202,10 @@ class xlsx_reader(object):
             for row in output[record]:
                 if any(list == row for list in exit[record]) == False:
                     exit[record].append(row)
-                    """#exit[record] = [row]
-                    print('\n')
-                    #print(row)
-                else:
-                    exit[record].append(row)"""
         return exit
 
 class xlsx_writer(object):
     def __init__(self, carrera, grado, grupo):
-        locale.setlocale(locale.LC_ALL, 'es-MX')
         self.carrera = carrera
         self.grado = grado
         self.grupo = grupo
@@ -228,16 +221,17 @@ class xlsx_writer(object):
     def date_assignament(self, majors, corte, habiles):
         array = {}
         for major in majors:
-            _major = choice(majors[major])
+            
             #print(major)
 
-            """index = len(majors[major]) - 1
-            last = majors[major][index]"""
             wd = process_data()
-            day = wd.date_assignament(_major[0])
-            #print(f'{_major} - {day}')
             
+            #print(f'{_major} - {day}')
+
             for row in corte:
+                _major = choice(majors[major])
+                day = wd.date_assignament(_major[0])
+                
                 #print(row)
                 if row.weekday() == day:
                     if not major in array:
@@ -271,6 +265,36 @@ class xlsx_writer(object):
         else:
             return self.__recursive_date_validation(date, wd, habiles)
 
+    def __re_asign_date(self, majors, dates, actual, corte):
+        wd = process_data()
+        __date = actual.weekday()
+        print(corte)
+
+        details = None
+        evaluate = None
+        
+        if len(majors) > 1:
+            for major in majors:
+                tmp = wd.date_assignament(major[0])
+                if __date != tmp:
+                    evaluate = tmp
+                    details = [major[1], major[2]]
+                    break
+        else:
+            return None
+        final_date = None
+        for dt in dates:
+            if dt > actual and dt < corte and dt.weekday() == evaluate:
+                final_date = dt
+                break
+        
+        if final_date != None:
+            return [final_date, details[0], details[1]]
+        else:
+            return None
+
+        
+
     def write(self, corte, majors, habiles, entregas, ciclo):
         columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
         wb = openpyxl.load_workbook(self.name)
@@ -295,17 +319,51 @@ class xlsx_writer(object):
         
         
         fechas = self.date_assignament(majors, corte, habiles)
+
         row = 9
+        #print(majors)
         for major in fechas:
             column = 1
+            tmp = None
+            index = 0
             for fecha in fechas[major]:
+                pendiente = 0
+                if fecha[0] == tmp:
+                    new_date = self.__re_asign_date(majors[major], habiles, fecha[0], corte[index])
+                    
+                    if new_date != None:
+                        dt = new_date[0].strftime('%A %d de %B')
+                        lab = new_date[1]
+                        hora = new_date[2].split('-')[0]
+                    else:
+                        dt = 'Pendiente de\nvalidar con maestro'
+                        pendiente = 1
+                elif tmp != None and fecha[0] < tmp:
+                    new_date = self.__re_asign_date(majors[major], habiles, fecha[0], corte[index])
+                    
+                    if new_date != None:
+                        dt = new_date[0].strftime('%A %d de %B')
+                        lab = new_date[1]
+                        hora = new_date[2].split('-')[0]
+                    else:
+                        dt = 'Pendiente de\nvalidar con maestro'
+                        pendiente = 1
+                else:
+                    dt = fecha[0].strftime('%A %d de %B')
+                    lab = fecha[1]
+                    hora = fecha[2].split('-')[0]
+                
                 cell = f'{columns[column]}{row}'
-                dt = fecha[0].strftime('%A %d de %B')
-                hora = fecha[2].split('-')[0]
-                lab = fecha[1]
-                value = f'{dt}\n{hora}\n{lab}'
+                
+                if pendiente == 0:
+                    value = f'{dt}\n{hora}\n{lab}'
+                else:
+                    value = f'{dt}'
+                
                 ws[cell] = value
                 column += 1
+                tmp = fecha[0]
+                index += 1
             row += 1
         
         wb.save(self.name)
