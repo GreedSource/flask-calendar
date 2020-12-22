@@ -6,3 +6,6 @@ Para su funcionamiento es necesaria la creación de las carpetas siguientes
 -uploads
 -json
 -output
+
+posteriormente usar el siguiente comando desde la terminal de comandos (cmd) o powershell
+>>pip install -r requirements.txt
