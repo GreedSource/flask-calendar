@@ -1,0 +1,108 @@
+{
+    "Aplicaciones Web Orientada a Objetos": [
+        [
+            "lunes",
+            "Laboratorio 2",
+            "9:00-9:50"
+        ],
+        [
+            "martes",
+            "Laboratorio 1",
+            "12:40-13:30"
+        ],
+        [
+            "jueves",
+            "Laboratorio 8",
+            "9:00-9:50"
+        ]
+    ],
+    "Evaluación y mejora para el desarrollo de Software": [
+        [
+            "lunes",
+            "Laboratorio 2",
+            "11:00-11:50"
+        ],
+        [
+            "viernes",
+            "Laboratorio 5",
+            "7:00-7:50"
+        ]
+    ],
+    "INGLES": [
+        [
+            "lunes",
+            "Laboratorio 2",
+            "12:40-13:30"
+        ],
+        [
+            "martes",
+            "Laboratorio 2",
+            "11:00-11:50"
+        ],
+        [
+            "miercoles",
+            "Laboratorio 2",
+            "12:40-13:30"
+        ],
+        [
+            "jueves",
+            "Laboratorio 2",
+            "11:00-11:50"
+        ]
+    ],
+    "Diseño de apps": [
+        [
+            "martes",
+            "Laboratorio 5",
+            "7:00-7:50"
+        ],
+        [
+            "miercoles",
+            "Laboratorio 4",
+            "9:00-9:50"
+        ]
+    ],
+    "Estructura de datos aplicadas": [
+        [
+            "martes",
+            "Laboratorio 9",
+            "9:00-9:50"
+        ],
+        [
+            "miercoles",
+            "Laboratorio 8",
+            "11:00-11:50"
+        ],
+        [
+            "viernes",
+            "Laboratorio 2",
+            "11:00-11:50"
+        ]
+    ],
+    "Principios para IOT": [
+        [
+            "miercoles",
+            "Laboratorio 6",
+            "7:00-7:50"
+        ],
+        [
+            "jueves",
+            "Laboratorio 5",
+            "12:40-13:30"
+        ]
+    ],
+    "Formación sociocultural IV": [
+        [
+            "jueves",
+            "Aula C-103",
+            "7:00-7:50"
+        ]
+    ],
+    "Estándares y Métricas para el Desarrollo de Software": [
+        [
+            "viernes",
+            "Laboratorio 4",
+            "9:00-9:50"
+        ]
+    ]
+}
